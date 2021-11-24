@@ -70,6 +70,9 @@ jobs:
     name: ${{ matrix.name }} ${{ matrix.docker_tag }}
 
     env:
+      CXXFLAGS: "--static -static -std=c++17"
+      CPPFLAGS: "--static -static"
+      LDFLAGS: "--static -static"
       prerelease: false
 
     steps:
@@ -105,7 +108,7 @@ jobs:
         run: docker exec -w /root/${{ matrix.name }} multiarch ./bootstrap.sh
 
       - name: Docker - Configure ${{ matrix.name }}
-        run: docker exec --env-file env.custom -w /root/${{ matrix.name }} multiarch ./configure --host=${{ matrix.docker_tag }} --prefix=/root CXXFLAGS="${{ env.CXXFLAGS }}" CPPFLAGS="${{ env.CPPFLAGS }}" LDFLAGS="${{ env.LDFLAGS }}"
+        run: docker exec --env-file env.custom -w /root/${{ matrix.name }} multiarch ./configure --host=${{ matrix.docker_tag }} --prefix=/root
 
       - name: Docker - Make Install Build ${{ matrix.name }}
         run: docker exec --env-file env.custom -w /root/${{ matrix.name }} multiarch make -j$(nproc) install
