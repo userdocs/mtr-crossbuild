@@ -94,7 +94,7 @@ jobs:
         run: echo "PATH=/root/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" > env.custom
 
       - name: Host - Create docker multiarch ${{ matrix.arch }} container
-        run: docker run --name multiarch -it -d --env-file env.custom -w /root -v ${{ github.workspace }}:/root ${{ matrix.docker_id }}/${{ matrix.docker_repo }}:${{ matrix.docker_tag }}
+        run: docker run --name multiarch -it -d --env-file env.custom -w /root -v ${{ github.workspace }}:/root -e CXXFLAGS="${{ env.CXXFLAGS }}" -e CPPFLAGS="${{ env.CPPFLAGS }}" -e LDFLAGS="${{ env.LDFLAGS }}" ${{ matrix.docker_id }}/${{ matrix.docker_repo }}:${{ matrix.docker_tag }}
 
       - name: Docker - apk install build deps
         run: |
