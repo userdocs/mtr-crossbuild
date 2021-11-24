@@ -113,17 +113,17 @@ jobs:
       - name: Docker - Make Install Build ${{ matrix.name }}
         run: docker exec --env-file env.custom -w /root/${{ matrix.name }} multiarch make install
 
-      - name: Docker - Rename ${{ matrix.name }} to ${{ matrix.name }}-${{ matrix.arch }}
-        run: docker exec --env-file env.custom multiarch mv -f /root/sbin/${{ matrix.name }} /root/sbin/${{ matrix.name }}-${{ matrix.docker_tag }}
+      - name: Docker - Rename ${{ matrix.name }} to ${{ matrix.docker_tag }}-${{ matrix.name }}
+        run: docker exec --env-file env.custom multiarch mv -f /root/sbin/${{ matrix.name }} /root/sbin/${{ matrix.docker_tag }}-${{ matrix.name }}
 
-      - name: Docker - Rename ${{ matrix.name }}-packet to ${{ matrix.name }}-packet-${{ matrix.arch }}
-        run: docker exec --env-file env.custom multiarch mv -f /root/sbin/${{ matrix.name }}-packet /root/sbin/${{ matrix.name }}-packet-${{ matrix.docker_tag }}
+      - name: Docker - Rename ${{ matrix.name }}-packet to ${{ matrix.docker_tag }}-${{ matrix.name }}-packet
+        run: docker exec --env-file env.custom multiarch mv -f /root/sbin/${{ matrix.name }}-packet /root/sbin/${{ matrix.docker_tag }}-${{ matrix.name }}-packet
 
       - name: Host - Create path to binary env
-        run: echo "binary_path=$(echo ${{ github.workspace }}/sbin/${{ matrix.name }}-${{ matrix.docker_tag }})" >> $GITHUB_ENV
+        run: echo "binary_path=$(echo ${{ github.workspace }}/sbin/${{ matrix.docker_tag }}-${{ matrix.name }})" >> $GITHUB_ENV
 
       - name: Host - Create path to binary-packet env
-        run: echo "binary_packet_path=$(echo ${{ github.workspace }}/sbin/${{ matrix.name }}-packet-${{ matrix.docker_tag }})" >> $GITHUB_ENV
+        run: echo "binary_packet_path=$(echo ${{ github.workspace }}/sbin/${{ matrix.docker_tag }}-${{ matrix.name }}-packet)" >> $GITHUB_ENV
 
       - name: Host - Create release name env
         run: echo "binary_release_name=$(strings ${{ env.binary_path }} | sed -rn 's|^(mtr) ([0-9].*)|\1 \2|p' | head -n 1)" >> $GITHUB_ENV
