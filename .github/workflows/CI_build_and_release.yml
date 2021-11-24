@@ -105,13 +105,10 @@ jobs:
         run: docker exec -w /root/${{ matrix.name }} multiarch ./bootstrap.sh
 
       - name: Docker - Configure ${{ matrix.name }}
-        run: docker exec --env-file env.custom -w /root/${{ matrix.name }} multiarch ./configure --host=${{ matrix.docker_tag }} --disable-shared --enable-static --prefix=/root
-
-      - name: Docker - Make Build ${{ matrix.name }}
-        run: docker exec --env-file env.custom -w /root/${{ matrix.name }} multiarch make -j$(nproc) CXXFLAGS="${{ env.CXXFLAGS }}" -e CPPFLAGS="${{ env.CPPFLAGS }}" -e LDFLAGS="${{ env.LDFLAGS }}"
+        run: docker exec --env-file env.custom -w /root/${{ matrix.name }} multiarch ./configure --host=${{ matrix.docker_tag }} --prefix=/root CXXFLAGS="${{ env.CXXFLAGS }}" -e CPPFLAGS="${{ env.CPPFLAGS }}" -e LDFLAGS="${{ env.LDFLAGS }}"
 
       - name: Docker - Make Install Build ${{ matrix.name }}
-        run: docker exec --env-file env.custom -w /root/${{ matrix.name }} multiarch make install
+        run: docker exec --env-file env.custom -w /root/${{ matrix.name }} multiarch make -j$(nproc) install
 
       - name: Docker - Rename ${{ matrix.name }} to ${{ matrix.docker_tag }}-${{ matrix.name }}
         run: docker exec --env-file env.custom multiarch mv -f /root/sbin/${{ matrix.name }} /root/sbin/${{ matrix.docker_tag }}-${{ matrix.name }}
