@@ -95,7 +95,7 @@ jobs:
 
       - name: Docker - apk install build deps
         run: |
-          docker exec --env-file env.custom -w /root multiarch apk add autoconf automake bash bash-completion bison build-base ccache cmake coreutils curl findutils flex git graphviz libarchive-tools
+          docker exec --env-file env.custom -w /root multiarch apk add autoconf automake bash bash-completion bison build-base ccache cmake coreutils curl findutils flex git graphviz libarchive-tools libcap
           docker exec --env-file env.custom -w /root multiarch apk add libtool linux-headers ncurses-dev openssl-dev openssl-libs-static patch perl pkgconf python3 python3-dev re2c rsync rsync tar texinfo ttf-freefont xz zip
 
       - name: Docker - Git clone mtr
