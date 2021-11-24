@@ -105,7 +105,7 @@ jobs:
         run: docker exec -w /root/${{ matrix.name }} multiarch ./bootstrap.sh
 
       - name: Docker - Configure ${{ matrix.name }}
-        run: docker exec --env-file env.custom -w /root/${{ matrix.name }} multiarch ./configure --disable-shared --enable-static --prefix=/root
+        run: docker exec --env-file env.custom -w /root/${{ matrix.name }} multiarch ./configure --host=${{ matrix.docker_tag }} --disable-shared --enable-static --prefix=/root
 
       - name: Docker - Make Build ${{ matrix.name }}
         run: docker exec --env-file env.custom -w /root/${{ matrix.name }} multiarch make -j$(nproc)
