@@ -108,7 +108,7 @@ jobs:
         run: docker exec --env-file env.custom -w /root/${{ matrix.name }} multiarch ./configure --host=${{ matrix.docker_tag }} --disable-shared --enable-static --prefix=/root
 
       - name: Docker - Make Build ${{ matrix.name }}
-        run: docker exec --env-file env.custom -w /root/${{ matrix.name }} multiarch make -j$(nproc)
+        run: docker exec --env-file env.custom -w /root/${{ matrix.name }} multiarch make -j$(nproc) CXXFLAGS="${{ env.CXXFLAGS }}" -e CPPFLAGS="${{ env.CPPFLAGS }}" -e LDFLAGS="${{ env.LDFLAGS }}"
 
       - name: Docker - Make Install Build ${{ matrix.name }}
         run: docker exec --env-file env.custom -w /root/${{ matrix.name }} multiarch make install
