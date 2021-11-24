@@ -67,7 +67,7 @@ jobs:
             x86_64-linux-muslx32,
           ]
 
-    name: ${{ matrix.name }} ${{ matrix.arch_type }}
+    name: ${{ matrix.name }} ${{ matrix.docker_tag }}
 
     env:
       prerelease: false
